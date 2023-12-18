@@ -184,6 +184,10 @@ class LayoutDesignPainter extends CustomPainter {
       paint.shader = _shaderGrid;
       canvas.drawRect(Rect.fromLTWH(0, 0, docW, docH), paint);
     }
+    Paint paint = Paint();
+    paint.color = appData.backgroundColor;  
+    canvas.drawRect(Rect.fromLTWH(0, 0, docW, docH), paint);
+    
 
     // Dibuixa la llista de poligons (segons correspon, relatiu a la seva posició)
     if (appData.shapesList.isNotEmpty) {

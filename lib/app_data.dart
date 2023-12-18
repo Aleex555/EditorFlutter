@@ -13,6 +13,7 @@ class AppData with ChangeNotifier {
   List<Shape> shapesList = [];
   double strokeWidth = 1;
   Color color1 = Colors.black;
+  Color backgroundColor = Colors.black.withOpacity(0.0);
 
   bool readyExample = false;
   late dynamic dataExample;
@@ -24,6 +25,12 @@ class AppData with ChangeNotifier {
 
   void setStrokeWidth(double value) {
     strokeWidth = value;
+  }
+
+  void setBackgroundColor(Color value) {
+    backgroundColor = value;
+    notifyListeners();
+
   }
 
   void setZoomNormalized(double value) {

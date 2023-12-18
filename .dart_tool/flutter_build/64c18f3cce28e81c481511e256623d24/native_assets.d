@@ -1,0 +1,1 @@
+ D:\\alexm\\EditorFlutter\\.dart_tool\\flutter_build\\64c18f3cce28e81c481511e256623d24\\native_assets.yaml: 
