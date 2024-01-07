@@ -1,6 +1,6 @@
-import 'package:editor_base/util_shape.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_cupertino_desktop_kit/cdk.dart';
 import 'package:provider/provider.dart';
 import 'app_data.dart';
@@ -46,7 +46,7 @@ class LayoutDesignState extends State<LayoutDesign> {
         ((scrollArea.height - constraints.maxHeight) / 2));
   }
 
-  // Retorna la posició x,y al document, respecte on s'ha fet click
+  // Retorna la posiciÃ³ x,y al document, respecte on s'ha fet click
   Offset _getDocPosition(
       Offset position,
       double zoom,
@@ -122,11 +122,8 @@ class LayoutDesignState extends State<LayoutDesign> {
                 }
               },
               child: MouseRegion(
-                  cursor: appData.toolSelected == "view_grab"
-                      ? _isMouseButtonPressed
-                          ? SystemMouseCursors.grabbing
-                          : SystemMouseCursors.grab
-                      : MouseCursor.defer, // El cursor per defecte
+                  cursor: _getCursorForTool(
+                      appData.toolSelected, _isMouseButtonPressed),
                   child: Listener(
                       onPointerDown: (event) {
                         _focusNode.requestFocus();
@@ -143,8 +140,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                               docSize.height,
                               _scrollCenter.dx,
                               _scrollCenter.dy));
-                        }
-                        else if (appData.toolSelected == "pointer_shapes") {
+                        }else if (appData.toolSelected == "pointer_shapes") {
                             appData.selectShapeAtPosition(
                               _getDocPosition(
                                 event.localPosition,
@@ -162,7 +158,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                             );
                             
                           }
-                            setState(() {});
+                        setState(() {});
                       },
                       onPointerMove: (event) {
                         if (_isMouseButtonPressed) {
@@ -242,5 +238,21 @@ class LayoutDesignState extends State<LayoutDesign> {
         ],
       );
     });
+  }
+
+  SystemMouseCursor _getCursorForTool(
+      String toolSelected, bool isMouseButtonPressed) {
+    switch (toolSelected) {
+      case "pointer_shapes":
+        return SystemMouseCursors.basic;
+      case "shape_drawing":
+        return SystemMouseCursors.precise;
+      case "view_grab":
+        return isMouseButtonPressed
+            ? SystemMouseCursors.allScroll
+            : SystemMouseCursors.move;
+      default:
+        return SystemMouseCursors.click; // Cursor predeterminado
+    }
   }
 }
